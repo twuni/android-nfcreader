@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NFC Reader</string>
+    <string name="nfc_receive">Receive via NFC</string>
+    <string name="nfc_send">Send via NFC</string>
+</resources>
