@@ -9,6 +9,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.NfcF;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class ReceiveActivity extends Activity {
 
@@ -22,7 +23,21 @@ public class ReceiveActivity extends Activity {
 
 		super.onCreate( savedInstanceState );
 
+		try {
+			initializeFields();
+		} catch( Exception exception ) {
+			handleException( exception );
+		}
+
+	}
+
+	private void initializeFields() {
+
 		adapter = NfcAdapter.getDefaultAdapter( this );
+
+		if( adapter == null ) {
+			throw new RuntimeException( "NFC is not supported on this device." );
+		}
 
 		pendingIntent = PendingIntent.getActivity( this, 0, new Intent( this, getClass() ).addFlags( Intent.FLAG_ACTIVITY_SINGLE_TOP ), 0 );
 
@@ -60,6 +75,11 @@ public class ReceiveActivity extends Activity {
 	protected void onNewIntent( Intent intent ) {
 		Tag tag = intent.getParcelableExtra( NfcAdapter.EXTRA_TAG );
 		// TODO: Do some stuff.
+	}
+
+	private void handleException( Exception exception ) {
+		Toast.makeText( this, String.format( "%s", exception.getMessage() ), Toast.LENGTH_LONG ).show();
+		finish();
 	}
 
 }
